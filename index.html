@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Loja Fácil: protótipo de e-commerce para teste de usabilidade. Loja fictícia, sem cobrança.">
+  <meta name="theme-color" content="#131921">
+  <meta name="robots" content="noindex">
+  <title>Loja Fácil</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="page">
+    <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="logo" href="#/">
+          <svg viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+            <rect x="5" y="10" width="30" height="24" rx="6" fill="none" stroke="#fff" stroke-width="2.4"/>
+            <path d="M14 10 V8 a6 6 0 0 1 12 0 v2" fill="none" stroke="#ff9900" stroke-width="2.4"/>
+            <path d="M14 22 l4 4 8-9" fill="none" stroke="#ff9900" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Loja <span class="facil">Fácil</span></span>
+        </a>
+        <button class="loc" type="button" data-action="delivery">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+          </svg>
+          <span>
+            <span class="loc-small">Entregar em</span>
+            <span class="loc-strong">Todo o Brasil</span>
+          </span>
+        </button>
+        <div class="search-wrap">
+          <form id="search-form" class="search" role="search" action="#/busca" novalidate>
+            <label class="sr-only" for="dept">Departamento</label>
+            <select id="dept" aria-label="Departamento">
+              <option value="todos">Todos</option>
+              <option value="eletronicos">Eletrônicos</option>
+              <option value="casa">Casa</option>
+              <option value="moda">Moda</option>
+              <option value="esporte">Esporte</option>
+            </select>
+            <label class="sr-only" for="q">Buscar produtos por nome</label>
+            <input id="q" name="q" type="text" autocomplete="off" placeholder="O que você procura hoje?" aria-autocomplete="list" aria-controls="suggestions" aria-expanded="false">
+            <button type="button" id="clear-q" hidden>Limpar</button>
+            <button class="buscar" type="submit">
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="10" cy="10" r="6.5" fill="none" stroke="#111" stroke-width="2.4"/>
+                <path d="M15 15 l6 6" stroke="#111" stroke-width="2.4" stroke-linecap="round"/>
+              </svg>
+              Buscar
+            </button>
+          </form>
+          <ul id="suggestions" class="suggestions" role="listbox" hidden></ul>
+        </div>
+        <a class="account" id="account-link" href="#/entrar">
+          <span class="hello-long" id="hello-line">Olá, faça seu login</span>
+          <span class="hello-strong" id="hello-strong">Conta e pedidos</span>
+          <span class="hello-short" id="hello-short">Entrar</span>
+        </a>
+        <a class="help-link" href="#/ajuda">Ajuda</a>
+        <a class="cart-link" id="cart-link" href="#/carrinho" aria-label="Carrinho, 0 itens">
+          <span class="cart-icon-wrap">
+            <span class="cart-count" id="cart-count">0</span>
+            <svg viewBox="0 0 40 32" width="40" height="32" aria-hidden="true" focusable="false">
+              <path d="M2 6 h7 l4 16 h18 l4-12 H14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+              <circle cx="16" cy="27" r="2.3" fill="currentColor"/>
+              <circle cx="28" cy="27" r="2.3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="cart-word">Carrinho</span>
+        </a>
+      </div>
+    </header>
+    <nav class="subnav" aria-label="Departamentos">
+      <div class="subnav-inner">
+        <button class="todos-btn" type="button" id="todos-btn" aria-expanded="false" aria-controls="dept-panel">☰ Todos</button>
+        <a href="#/ofertas" data-nav="ofertas">Ofertas do dia</a>
+        <a href="#/c/eletronicos" data-nav="eletronicos">Eletrônicos</a>
+        <a href="#/c/casa" data-nav="casa">Casa</a>
+        <a href="#/c/moda" data-nav="moda">Moda</a>
+        <a href="#/c/esporte" data-nav="esporte">Esporte</a>
+        <a href="#/ajuda" data-nav="ajuda">Atendimento</a>
+      </div>
+    </nav>
+    <div id="dept-panel" class="dept-panel" hidden>
+      <div class="dept-inner">
+        <p id="dept-label"><strong>Escolha um departamento</strong></p>
+        <div class="dept-grid">
+          <a href="#/c/eletronicos">Eletrônicos</a>
+          <a href="#/c/casa">Casa</a>
+          <a href="#/c/moda">Moda</a>
+          <a href="#/c/esporte">Esporte</a>
+          <a href="#/ofertas">Ofertas do dia</a>
+        </div>
+      </div>
+    </div>
+    <div id="testbar" class="testbar" hidden>
+      <div class="testbar-inner">
+        <span>Registro de teste ativo neste navegador.</span>
+        <a href="admin.html">Abrir área da pesquisa</a>
+      </div>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden>
+      <p id="toast-text"></p>
+      <button type="button" class="btn btn-add btn-small" id="toast-action" hidden>Desfazer</button>
+      <button type="button" class="btn btn-ghost btn-small" id="toast-close">Fechar</button>
+    </div>
+    <main id="conteudo" tabindex="-1"></main>
+    <footer>
+      <button class="backtop" type="button" data-action="top">Voltar ao topo</button>
+      <div class="footer-mid">
+        <div class="footer-grid">
+          <div>
+            <p class="footer-title">Conheça</p>
+            <a href="#/">Página inicial</a><br>
+            <a href="#/ofertas">Ofertas do dia</a><br>
+            <a href="#/ajuda">Como comprar</a>
+          </div>
+          <div>
+            <p class="footer-title">Sua conta</p>
+            <a href="#/entrar">Fazer login</a><br>
+            <a href="#/carrinho">Carrinho</a><br>
+            <a href="#/pedidos">Pedidos</a>
+          </div>
+          <div>
+            <p class="footer-title">Sobre este protótipo</p>
+            <p>Loja fictícia para um teste de usabilidade. Não vende de verdade e não envia dados.</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-bottom-inner">
+          <p>Loja Fácil — protótipo de TCC, PUC Minas, campus Betim. Não tem relação com a Amazon. Nenhum pagamento é processado.</p>
+          <p><a href="admin.html">Registro do teste</a></p>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <h2 id="modal-title"></h2>
+      <div id="modal-body"></div>
+      <button type="button" class="btn btn-ghost" id="modal-close">Fechar</button>
+    </div>
+  </div>
+  <div id="live" class="sr-only" aria-live="polite"></div>
+  <noscript>
+    <p>Esta loja precisa de JavaScript para busca, carrinho e pagamento simulado.</p>
+  </noscript>
+  <script src="js/products.js"></script>
+  <script src="js/logger.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
