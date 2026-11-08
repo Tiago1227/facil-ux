@@ -18,6 +18,27 @@ Também dá para abrir o arquivo `index.html` direto no navegador.
 
 A loja fica em [http://127.0.0.1:41731/](http://127.0.0.1:41731/).
 
+## Artigo
+
+O texto do trabalho fica em `artigo/`: `main.tex`, `referencias.bib` e as figuras. Para gerar o PDF, com TeX Live e o pacote `abntex2`:
+
+```bash
+cd artigo
+latexmk -pdf main.tex
+```
+
+Sem o `latexmk`:
+
+```bash
+cd artigo
+pdflatex main.tex
+bibtex main
+pdflatex main.tex
+pdflatex main.tex
+```
+
+O que a compilação gera (`.aux`, `.log`, `.bbl`, PDF e similares) fica de fora do Git.
+
 ## Roteiro das cinco tarefas
 
 Use um e-mail inventado, como `maria@teste.com`, e uma senha inventada com 6 ou mais caracteres. Não use senha nem cartão reais.
