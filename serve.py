@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Servidor estático da Loja Fácil. Sem build. /admin abre a área da pesquisa."""
+"""Servidor estático da Loja Fácil. Sem build."""
 
 import os
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -19,9 +19,7 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         path = urlparse(self.path).path
-        if path.rstrip("/") == "/admin":
-            self.path = "/admin.html" + (("?" + self.path.split("?", 1)[1]) if "?" in self.path else "")
-        elif path == "/favicon.ico":
+        if path == "/favicon.ico":
             self.path = "/favicon.svg"
         return super().do_GET()
 

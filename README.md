@@ -14,13 +14,9 @@ python3 serve.py
 
 Abra [http://127.0.0.1:41731/](http://127.0.0.1:41731/).
 
-Também dá para abrir o arquivo `index.html` direto no navegador. O registro do teste entre a loja e a página da pesquisa funciona melhor com o servidor, porque as duas páginas ficam na mesma origem.
+Também dá para abrir o arquivo `index.html` direto no navegador.
 
-Atalhos:
-
-- Loja: [http://127.0.0.1:41731/](http://127.0.0.1:41731/)
-- Registro do teste: [http://127.0.0.1:41731/admin](http://127.0.0.1:41731/admin)
-- Faixa discreta de teste na loja: [http://127.0.0.1:41731/?teste=1](http://127.0.0.1:41731/?teste=1)
+A loja fica em [http://127.0.0.1:41731/](http://127.0.0.1:41731/).
 
 ## Roteiro das cinco tarefas
 
@@ -38,20 +34,7 @@ A confirmação mostra um número de pedido. Nenhum valor é cobrado.
 
 Senha, endereço e pagamento ficam só na memória da aba enquanto a compra não termina, e são apagados na confirmação ou ao sair da página. Eles não vão para `localStorage`, `sessionStorage` nem para a rede.
 
-O carrinho e o nome usado no “Olá” permanecem na aba (`sessionStorage`) para o teste não se perder num recarregamento. O registro de tempos fica só neste navegador (`localStorage`), sem senha, endereço ou cartão.
-
-## Registro para a pesquisa
-
-Abra `/admin` (ou `admin.html`) em outra aba do mesmo navegador.
-
-1. Digite um código (P01, P02…) e clique em **Começar nova sessão** antes de cada pessoa.
-2. A pessoa faz as tarefas na loja.
-3. A tabela mostra tempo e erros de login, buscar, adicionar, remover e finalizar.
-4. **Exportar CSV** gera um arquivo com ponto e vírgula e acentos, para o Excel em português.
-
-“Reiniciar” zera uma tarefa sem apagar as outras. “Apagar registros” pede um segundo clique.
-
-O relógio de cada tarefa começa na tela correspondente e para quando a pessoa conclui. Erro de validação, busca sem resultado e desfazer uma remoção entram na contagem.
+O carrinho e o nome usado no “Olá” permanecem na aba (`sessionStorage`) para a compra não se perder num recarregamento.
 
 ## Melhorias em relação à loja de referência
 

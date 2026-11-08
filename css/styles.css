@@ -337,22 +337,6 @@ a { color: var(--link); text-underline-offset: 3px; }
 
 .dept-grid a:hover { border-color: var(--accent); background: #fff; }
 
-.testbar { background: #37475a; color: #fff; }
-
-.testbar[hidden] { display: none; }
-
-.testbar-inner {
-  width: min(var(--max), calc(100% - 24px));
-  margin: 0 auto;
-  padding: 8px 0;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.testbar a { color: #fff; font-weight: 700; }
-
 .toast {
   position: sticky;
   top: 0;
@@ -599,7 +583,7 @@ main {
 
 .qty-line label { font-weight: 700; }
 
-.qty-line select, .field input, .field select, .admin input {
+.qty-line select, .field input, .field select {
   min-height: 52px;
   border: 2px solid #555;
   border-radius: 8px;
@@ -808,39 +792,6 @@ footer { color: #fff; margin-top: 24px; }
   border-radius: 12px;
   padding: 20px;
 }
-
-.admin-steps { padding-left: 1.2rem; }
-
-.admin-steps li { margin: 0.35rem 0; }
-
-.admin-toolbar {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
-.table-wrap { overflow-x: auto; margin: 12px 0 20px; background: #fff; border-radius: 12px; }
-
-table.data { width: 100%; border-collapse: collapse; }
-
-table.data caption {
-  text-align: left;
-  font-weight: 700;
-  padding: 12px;
-}
-
-table.data th, table.data td {
-  text-align: left;
-  padding: 12px;
-  border-bottom: 1px solid var(--line);
-  vertical-align: top;
-}
-
-table.data thead th { background: var(--header); color: #fff; }
-
-.lead { font-size: 1.1rem; }
 
 @media (min-width: 800px) {
   .hero { grid-template-columns: 1.4fr 0.8fr; align-items: center; }

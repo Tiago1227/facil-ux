@@ -77,7 +77,11 @@
   var lastRouteKey = "";
   var modalOpener = null;
 
-  function esc(value) { return TestLog.esc(value); }
+  function esc(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
+    });
+  }
 
   function digits(value) { return String(value || "").replace(/\D/g, ""); }
 
@@ -455,13 +459,11 @@
     if (!product) return;
     var amount = parseInt(qty, 10);
     if (!amount || amount < 1) amount = 1;
-    TestLog.startTask("adicionar");
     var found = null;
     cart.items.forEach(function (item) { if (item.id === id) found = item; });
     if (found) found.qty = Math.min(5, found.qty + amount);
     else cart.items.push({ id: id, qty: Math.min(5, amount) });
     saveCart();
-    TestLog.completeTask("adicionar");
     showToast(product.name + " foi adicionado ao carrinho.", {
       actionLabel: "Ver carrinho",
       onAction: function () { go("#/carrinho"); }
@@ -498,11 +500,9 @@
     var current = null;
     cart.items.forEach(function (item) { if (item.id === id) current = item; });
     if (!current) return;
-    TestLog.startTask("remover");
     undoSnapshot = { id: current.id, qty: current.qty };
     cart.items = cart.items.filter(function (item) { return item.id !== id; });
     saveCart();
-    TestLog.completeTask("remover");
     render();
     showToast((product ? product.name : "Item") + " saiu do carrinho.", {
       actionLabel: "Desfazer",
@@ -522,8 +522,6 @@
     if (found) found.qty = Math.min(5, found.qty + snap.qty);
     else cart.items.push({ id: snap.id, qty: snap.qty });
     saveCart();
-    TestLog.reopenTask("remover");
-    TestLog.addError("remover", "Desfez a remoção");
     hideToast();
     render();
     var live = document.getElementById("live");
@@ -537,12 +535,6 @@
     var cat = dept ? dept.value : "todos";
     if (input && typeof forcedQuery === "string") input.value = forcedQuery;
     hideSuggestions();
-    var meaningful = LojaSearch.normalize(query);
-    TestLog.startTask("buscar");
-    var result = LojaSearch.searchProducts(query, cat);
-    if (!meaningful && (!cat || cat === "todos")) TestLog.addError("buscar", "Busca vazia");
-    else if (!result.items.length) TestLog.addError("buscar", "Nenhum resultado");
-    else TestLog.completeTask("buscar");
     go("#/busca?q=" + encodeURIComponent(query) + "&cat=" + encodeURIComponent(cat || "todos"));
   }
 
@@ -555,7 +547,6 @@
       hideSuggestions();
       return;
     }
-    TestLog.startTask("buscar");
     var cat = document.getElementById("dept").value;
     var result = LojaSearch.searchProducts(input.value, cat);
     var items = result.items.slice(0, 6).map(function (product) {
@@ -600,8 +591,6 @@
     if (!item) return;
     hideSuggestions();
     if (item.productId) {
-      TestLog.startTask("buscar");
-      TestLog.completeTask("buscar");
       go("#/produto/" + item.productId);
       return;
     }
@@ -653,7 +642,6 @@
     readAddress();
     var result = validateAddress(draft.address);
     if (result.first) {
-      TestLog.addError("finalizar", "Endereço incompleto");
       formErrors = result.errors;
       focusField = result.first;
       draft.step = 1;
@@ -671,7 +659,6 @@
     readPayment();
     var result = validatePayment();
     if (result.first) {
-      TestLog.addError("finalizar", "Pagamento incompleto");
       formErrors = result.errors;
       focusField = result.first;
       draft.step = 2;
@@ -706,13 +693,11 @@
   }
 
   function submitLogin() {
-    TestLog.startTask("login");
     if (loginState.step !== "password") {
       var emailInput = document.getElementById("login-email");
       var email = emailInput ? emailInput.value : "";
       var err = emailError(email);
       if (err) {
-        TestLog.addError("login", email.trim() ? "E-mail inválido" : "E-mail vazio");
         loginState.email = email;
         loginState.errors = { email: err };
         focusField = "login-email";
@@ -732,7 +717,6 @@
     typed = "";
     if (passwordInput) passwordInput.value = "";
     if (perr) {
-      TestLog.addError("login", perr.indexOf("Digite a senha") === 0 ? "Senha vazia" : "Senha curta");
       loginState.errors = { password: perr };
       focusField = "login-password";
       render();
@@ -740,7 +724,6 @@
     }
     auth = { email: loginState.email, name: nameFromEmail(loginState.email) };
     saveAuth();
-    TestLog.completeTask("login");
     var dest = returnTo && returnTo !== "#/entrar" ? returnTo : "#/";
     setReturn("#/");
     loginState.step = "email";
@@ -755,7 +738,6 @@
       return;
     }
     if (!cart.items.length) {
-      TestLog.addError("finalizar", "Carrinho vazio");
       go("#/carrinho");
       return;
     }
@@ -783,8 +765,6 @@
     draft.payment = { method: "cartao", holder: "", last4: "", expiry: "" };
     draft.step = 1;
     maxStep = 1;
-    TestLog.startTask("finalizar");
-    TestLog.completeTask("finalizar");
     go("#/pedido/" + order.id);
   }
 
@@ -887,7 +867,6 @@
     var cat = route.params.cat || "todos";
     var result = LojaSearch.searchProducts(query, cat);
     var meaningful = LojaSearch.normalize(query);
-    if (meaningful && result.items.length) TestLog.completeTask("buscar");
     var banner = "";
     if (result.suggestion && (result.fuzzy || !result.items.length)) {
       var href = "#/busca?q=" + encodeURIComponent(result.suggestion) + "&cat=" + encodeURIComponent(cat);
@@ -912,7 +891,6 @@
   function viewProduct(id) {
     var product = LojaSearch.getProduct(id);
     if (!product) return null;
-    TestLog.startTask("adicionar");
     return {
       title: product.name,
       html:
@@ -933,7 +911,6 @@
   }
 
   function viewCart() {
-    if (cart.items.length) TestLog.startTask("remover");
     if (!cart.items.length) {
       return {
         title: "Carrinho",
@@ -971,7 +948,6 @@
           '<button type="button" class="btn btn-ghost btn-block" data-action="logout">Sair</button></div></div></div>'
       };
     }
-    TestLog.startTask("login");
     var emailErr = loginState.errors.email || "";
     var passErr = loginState.errors.password || "";
     var body;
@@ -1025,7 +1001,6 @@
           '<a class="btn btn-ghost" href="#/carrinho">Voltar ao carrinho</a></div></div>'
       };
     }
-    TestLog.startTask("finalizar");
     var step = draft.step;
     if (step < 1 || step > 3) step = 1;
     var main = "";
@@ -1202,7 +1177,6 @@
     setDept(false);
     hideSuggestions();
     if (!undoSnapshot) hideToast();
-    if (window.Dashboard) Dashboard.unmount();
     paintChrome();
 
     var input = document.getElementById("q");
@@ -1221,19 +1195,6 @@
     }
 
     var main = document.getElementById("conteudo");
-    if (route.name === "admin") {
-      document.title = "Registro do teste | Loja Fácil";
-      Dashboard.mount(main);
-      window.scrollTo(0, 0);
-      var adminHeading = main.querySelector("h1");
-      if (adminHeading) {
-        adminHeading.setAttribute("tabindex", "-1");
-        adminHeading.classList.add("route-focus");
-        adminHeading.focus({ preventScroll: true });
-      }
-      return;
-    }
-
     var view = null;
     if (route.name === "home") view = viewHome();
     else if (route.name === "c") view = viewCategory(route.id);
@@ -1310,7 +1271,6 @@
     } else if (action === "remove") removeItem(el.getAttribute("data-id"));
     else if (action === "checkout") {
       if (!cart.items.length) {
-        TestLog.addError("finalizar", "Carrinho vazio");
         showToast("Seu carrinho está vazio. Escolha um produto antes de finalizar.");
         return;
       }
@@ -1355,10 +1315,6 @@
 
   function init() {
     paintChrome();
-    if (new URLSearchParams(location.search).get("teste") === "1") {
-      var bar = document.getElementById("testbar");
-      if (bar) bar.hidden = false;
-    }
     var toast = document.getElementById("toast");
     document.getElementById("search-form").addEventListener("submit", onSearchSubmit);
     document.getElementById("q").addEventListener("input", onSearchInput);
